@@ -8,8 +8,8 @@ import time
 from bowl_config import bowl_config
 from bowl_dataset import BowlDataset
 import utils
-import model as modellib
-from model import log
+import hsModel as modellib
+from hsModel import log
 from glob import glob
 
 # Root directory of the project
@@ -64,5 +64,5 @@ dataset_val.prepare()
 
 model.train(dataset_train, dataset_val, 
             learning_rate=bowl_config.LEARNING_RATE / 10,
-            epochs=100, 
+            epochs=200, 
             layers="all")
