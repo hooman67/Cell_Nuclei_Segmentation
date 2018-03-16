@@ -2203,12 +2203,19 @@ class MaskRCNN():
                                        batch_size=self.config.BATCH_SIZE,
                                        augment=False)
 
+
         # Callbacks
         callbacks = [
             keras.callbacks.TensorBoard(log_dir=self.log_dir,
                                         histogram_freq=0, write_graph=True, write_images=False),
+
+            #HS early stop in the middle of the epoch. 
+            keras.callbacks.EarlyStopping(patience=5, verbose=1),
+
+            #Hs only save the best epoch
             keras.callbacks.ModelCheckpoint(self.checkpoint_path,
                                             verbose=1, save_best_only=True, save_weights_only=True)
+            
             # HS original: keras.callbacks.ModelCheckpoint(self.checkpoint_path,
                                             #verbose=0, save_weights_only=True),
         ]
