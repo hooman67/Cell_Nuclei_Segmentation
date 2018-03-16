@@ -2209,7 +2209,7 @@ class MaskRCNN():
             keras.callbacks.TensorBoard(log_dir=self.log_dir,
                                         histogram_freq=0, write_graph=True, write_images=False),
 
-            #HS early stop in the middle of the epoch. 
+            #HS early stop the training if no improvment for 5 epochs 
             keras.callbacks.EarlyStopping(patience=5, verbose=1),
 
             #Hs only save the best epoch

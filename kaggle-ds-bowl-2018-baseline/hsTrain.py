@@ -5,12 +5,14 @@ import random
 import math
 import time
 
-from bowl_config import bowl_config
+from hs_config import hs_config
 from bowl_dataset import BowlDataset
 import utils
 import hsModel as modellib
 from hsModel import log
 from glob import glob
+
+
 
 # Root directory of the project
 ROOT_DIR = os.getcwd()
@@ -20,15 +22,23 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 # Local path to trained weights file
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
+
+########## HS path to whatever .h5 file you want####################
+hsSavedWeightPath = os.path.join(MODEL_DIR, "bowl20180314T0500/mask_rcnn_bowl_0194.h5")
+###########################################
+
+
 # Download COCO trained weights from Releases if needed
 if not os.path.exists(COCO_MODEL_PATH):
     utils.download_trained_weights(COCO_MODEL_PATH)
     
-model = modellib.MaskRCNN(mode="training", config=bowl_config,
+model = modellib.MaskRCNN(mode="training", config=hs_config,
                           model_dir=MODEL_DIR)
 
+
+
 # Which weights to start with?
-init_with = "last"  # imagenet, coco, or last
+init_with = "coco"  # imagenet, coco, last, or hs
 
 if init_with == "imagenet":
     model.load_weights(model.get_imagenet_weights(), by_name=True)
@@ -42,6 +52,12 @@ elif init_with == "coco":
 elif init_with == "last":
     # Load the last model you trained and continue training
     model.load_weights(model.find_last()[1], by_name=True)
+
+elif init_with == "hs":
+    # hs to manually load the weights
+    model.load_weights(hsSavedWeightPath, by_name=True)
+
+
     
 # Training dataset
 dataset_train = BowlDataset()
@@ -53,6 +69,8 @@ dataset_val = BowlDataset()
 dataset_val.load_bowl('stage1_train')
 dataset_val.prepare()
 
+
+
 # Train the head branches
 # Passing layers="heads" freezes all layers except the head
 # layers. You can also pass a regular expression to select
@@ -63,6 +81,6 @@ dataset_val.prepare()
 #            layers='heads')
 
 model.train(dataset_train, dataset_val, 
-            learning_rate=bowl_config.LEARNING_RATE / 10,
-            epochs=200, 
+            learning_rate=hs_config.LEARNING_RATE / 10,
+            epochs=400, 
             layers="all")

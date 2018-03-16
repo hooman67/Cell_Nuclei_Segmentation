@@ -13,7 +13,11 @@ class HsConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 2 # hs orig was 2, 16 wokrs with resNet50 not with 101
+    IMAGES_PER_GPU = 2 
+    '''HS: 
+    orig was 2, 16 woked with resNet50 in hsDebugTrain.ipyb but didnt work in shell with 16,12, or 8, or 4.
+    With ResNet101, only works with 2, not even with 4.
+    '''
 
     # Number of classes (including background)
     NUM_CLASSES = 1 + 1 # background + nuclei
@@ -41,7 +45,7 @@ class HsConfig(Config):
 
     DETECTION_MAX_INSTANCES = 512
 
-    RESNET_ARCHITECTURE = "resnet101"  # original was "resnet50" i tried "resnet101" got a reource exhustion. 
+    RESNET_ARCHITECTURE = "resnet101"  # original was "resnet50" i tried "resnet101" works with batchsize = 2.
 
 
 hs_config = HsConfig()
