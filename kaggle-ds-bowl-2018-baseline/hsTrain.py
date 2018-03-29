@@ -24,7 +24,7 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
 
 ########## HS path to whatever .h5 file you want####################
-hsSavedWeightPath = os.path.join(MODEL_DIR, "bowl20180314T0500/mask_rcnn_bowl_0194.h5")
+hsSavedWeightPath = os.path.join(MODEL_DIR, "maskRCNN_Resnet101_ep9.h5")
 ###########################################
 
 
@@ -38,7 +38,7 @@ model = modellib.MaskRCNN(mode="training", config=hs_config,
 
 
 # Which weights to start with?
-init_with = "coco"  # imagenet, coco, last, or hs
+init_with = "last"  # imagenet, coco, last, or hs
 
 if init_with == "imagenet":
     model.load_weights(model.get_imagenet_weights(), by_name=True)
