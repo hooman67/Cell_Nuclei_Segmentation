@@ -16,15 +16,28 @@ class HsConfig():
     With ResNet101, only works with 2, not even with 4.
     '''
 
-    # Learning rate and momentum
-    # The Mask RCNN paper uses lr=0.02, but on TensorFlow it causes
-    # weights to explode. Likely due to differences in optimzer
-    # implementation.
-    LEARNING_RATE =0.00001 #after ep 49, 0.0001  #orig, 0.001
-    LEARNING_MOMENTUM = 0.9
+
+    '''
+    After training for 2 epochs with RL0.0005 test error actually went up. So im gonna try
+    0.0001LR with 0.001WeightDecat.
+
+    I trained for 14 epochs using LR0.001 and WeightDecay0.0007 to achieve a 0.396 score.
+    Adter eapoch 24 (actualyl epoch 10 since i was training on top of ep 14), the loss
+    wasnt going down anymore. So I'm gonna try with LR0.0005, 
+
+    Before hsTrain would divide the LR by 10, Learning with, after ep 49, I used 0.0001 but this 
+    (actually 0.00001) was too low and the algorithm didnt learn after several epochs.. 
+    #orig, 0.001
+
+    The Mask RCNN paper uses lr=0.02, but on TensorFlow it causes
+    weights to explode. Likely due to differences in optimzer implementation.
+    '''
+    LEARNING_RATE = 0.0005 #6: trying 0.0001 again -- 5:0.0005 for some reason this didnt work -- 4:0.001 this was good for me -- 3: 0.0001 -- 2: 0.00001 = TOO LOW -- orig  0.001
+    LEARNING_MOMENTUM = 0.9 
 
     # Weight decay regularization
-    WEIGHT_DECAY =0.0007 #orig 0.0001
+    #hs: For me 0.0007 peformed much better than 0.0001
+    WEIGHT_DECAY = 0.001 #3: 0.001, 2: 0.0007 #orig 0.0001.
 
 
     # Minimum probability value to accept a detected instance
@@ -76,11 +89,12 @@ class HsConfig():
     # a lot of time on validation stats.
 
     #hs paper had this at 1000
-    STEPS_PER_EPOCH = None
-
+    STEPS_PER_EPOCH = 1000 #orig None
 
     # use small validation steps since the epoch is small
-    VALIDATION_STEPS = 5
+    VALIDATION_STEPS = 5# orig 5
+
+
 
     # If enabled, resizes instance masks to a smaller size to reduce
     # memory load. Recommended when using high-resolution images.

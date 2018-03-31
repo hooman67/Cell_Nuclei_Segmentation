@@ -5,7 +5,8 @@ import random
 import math
 import time
 
-from hs_config import hs_config
+#from hs_config import hs_config
+from hs_config_resNet50 import hs_config
 from bowl_dataset import BowlDataset
 import utils
 import hsModel as modellib
@@ -24,7 +25,7 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
 
 ########## HS path to whatever .h5 file you want####################
-hsSavedWeightPath = os.path.join(MODEL_DIR, "maskRCNN_Resnet101_ep9.h5")
+hsSavedWeightPath = os.path.join(MODEL_DIR, "maskRCNN_Resnet50_ep194_score339.h5")
 ###########################################
 
 
@@ -38,7 +39,7 @@ model = modellib.MaskRCNN(mode="training", config=hs_config,
 
 
 # Which weights to start with?
-init_with = "last"  # imagenet, coco, last, or hs
+init_with = "hs"  # imagenet, coco, last, or hs
 
 if init_with == "imagenet":
     model.load_weights(model.get_imagenet_weights(), by_name=True)
@@ -81,6 +82,6 @@ dataset_val.prepare()
 #            layers='heads')
 
 model.train(dataset_train, dataset_val, 
-            learning_rate=hs_config.LEARNING_RATE / 10,
+            learning_rate=hs_config.LEARNING_RATE,
             epochs=400, 
             layers="all")
